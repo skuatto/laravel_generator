@@ -8,41 +8,41 @@ namespace LARAVEL_WEB_GENERATOR
 {
     public class XmlModel
     {
-        public string ruta { get; set; }
-        public string nombre { get; set; }
+        public string Ruta { get; set; }
+        public string Nombre { get; set; }
 
-        public List<Idioma> idiomas { get; set; }
-        public List<Elemento> elementos { get; set; }
-        public List<Menu> menus { get; set; }
+        public List<Idioma> Idiomas { get; set; }
+        public List<Elemento> Elementos { get; set; }
+        public List<Menu> Menus { get; set; }
     }
 
     public class Idioma
     {
-        public string nombre { get; set; }
+        public string Nombre { get; set; }
 
     }
 
     public class Elemento
     {
-        public string nombre { get; set; }
-        public List<Campo> campos { get; set; }
+        public string Nombre { get; set; }
+        public List<Campo> Campos { get; set; }
     }
 
     public class Campo
     {
-        public string nombre { get; set; }
-        public string tipo { get; set; }
-        public bool editable { get; set; }
+        public string Nombre { get; set; }
+        public string Tipo { get; set; }
+        public bool Editable { get; set; }
    }
 
     public class Menu
     {
-        public string nombre { get; set; }
-        public List<SubMenu> submenu { get; set; }
+        public string Nombre { get; set; }
+        public List<SubMenu> Submenu { get; set; }
     }
 
     public class SubMenu
     {
-        public string nombre { get; set; }
+        public string Nombre { get; set; }
     }
 }

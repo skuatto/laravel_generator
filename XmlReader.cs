@@ -9,7 +9,7 @@ namespace LARAVEL_WEB_GENERATOR
 {
     public class XmlReader
     {
-        public XmlModel model {get; set;}
+        public XmlModel Model {get; set;}
 
         public static XmlModel LeerXML(string ruta)
         {
@@ -20,26 +20,26 @@ namespace LARAVEL_WEB_GENERATOR
 
                 model = new XmlModel
                 {
-                    ruta = documentoXML.Descendants("RUTA").First().Value,
-                    nombre = documentoXML.Descendants("NOMBRE").First().Value,
-                    idiomas = documentoXML.Descendants("IDIOMAS").Elements().Select(x => new Idioma { nombre = x.Name.ToString() }).ToList(),
-                    elementos = documentoXML.Descendants("ELEMENTOS").Elements().Select
+                    Ruta = documentoXML.Descendants("RUTA").First().Value,
+                    Nombre = documentoXML.Descendants("NOMBRE").First().Value,
+                    Idiomas = documentoXML.Descendants("IDIOMAS").Elements().Select(x => new Idioma { Nombre = x.Name.ToString() }).ToList(),
+                    Elementos = documentoXML.Descendants("ELEMENTOS").Elements().Select
                     (
                         x => new Elemento
                         {
-                            nombre = x.Name.ToString(), campos = x.Elements().Select(
-                                e => new Campo { nombre = e.Name.ToString(), tipo = e.Attribute("type").Value.ToString(), editable = (int.Parse(e.Attribute("editable").Value) == 1) ? true : false }
+                            Nombre = x.Name.ToString(), Campos = x.Elements().Select(
+                                e => new Campo { Nombre = e.Name.ToString(), Tipo = e.Attribute("type").Value.ToString(), Editable = (int.Parse(e.Attribute("editable").Value) == 1) ? true : false }
                             ).ToList()
                         }
                     ).ToList(),
 
-                    menus = documentoXML.Descendants("MENU").Elements().Select
+                    Menus = documentoXML.Descendants("MENU").Elements().Select
                     (
                         x => new Menu 
                         { 
-                            nombre = x.Name.ToString(), submenu = x.Elements().Select
+                            Nombre = x.Name.ToString(), Submenu = x.Elements().Select
                             (
-                                e => new SubMenu { nombre = e.Name.ToString() }
+                                e => new SubMenu { Nombre = e.Name.ToString() }
                             ).ToList()
                         }
                     ).ToList()

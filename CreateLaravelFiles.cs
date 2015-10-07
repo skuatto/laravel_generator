@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,26 +45,26 @@ namespace LARAVEL_WEB_GENERATOR
         ?>";
 
 
-        public static void writeFiles(XmlModel model)
+        public static void WriteFiles(XmlModel model)
         {
             int i = 1;
-            foreach (var elemento in model.elementos)
+            foreach (var elemento in model.Elementos)
             {
-                writeControllerFile(model, elemento, i);
+                WriteControllerFile(model, elemento, i);
                 i++;
             }
         }
 
-        public static void writeControllerFile(XmlModel model, Elemento elemento, int posicion)
+        public static void WriteControllerFile(XmlModel model, Elemento elemento, int posicion)
         {
             string programacionCampo = "";
                 
                 List<Campo> listaText = new List<Campo>();
                 List<Campo> listaFile = new List<Campo>();
                 List<Campo> listaData = new List<Campo>();
-                foreach (var campo in elemento.campos)
+                foreach (var campo in elemento.Campos)
                 {
-                    switch (campo.tipo)
+                    switch (campo.Tipo)
                     {
                         case "text": listaText.Add(campo);
                             break;
@@ -86,7 +85,7 @@ namespace LARAVEL_WEB_GENERATOR
 								${1} = \Idioma::find($idIdioma[1]);
 								${1}->texto_que_hacemos = $input_valor;
 								${1}->save();	
-							break;", text.nombre.ToLower(), model.nombre.ToLower());
+							break;", text.Nombre.ToLower(), model.Nombre.ToLower());
                     }
 
                     programacionCampo += String.Format(
@@ -102,12 +101,13 @@ namespace LARAVEL_WEB_GENERATOR
                             }}
                         }}", programacionCampoTexto);
                 }
-                write(model.nombre + rutaControllerAdmin + elemento.nombre + "Controller.php", String.Format(plantillaController, elemento.nombre, elemento.nombre.ToLower(), posicion, programacionCampo));
+                Write(model.Nombre + rutaControllerAdmin + elemento.Nombre + "Controller.php", String.Format(plantillaController, elemento.Nombre, elemento.Nombre.ToLower(), posicion, programacionCampo));
         }
 
-        private static void write(string path,string text)
+
+        private static void Write(string path,string text)
         {
-            File.WriteAllText(path, text);
+            System.IO.File.WriteAllText(path, text);
         }
     }
 }

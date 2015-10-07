@@ -35,9 +35,9 @@ namespace LARAVEL_WEB_GENERATOR
            */
             
             var model = XmlReader.LeerXML("config.xml");
-            CreateLaravelFiles.writeFiles(model); 
+           // CreateLaravelFiles.WriteFiles(model);
+            ModifyFiles.ModifyDatabase(model.Nombre, model.Nombre.ToLower());
 
-           
         }
     }
 }
