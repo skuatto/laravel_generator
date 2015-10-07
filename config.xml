@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<XML>
+	<RUTA>c:\wamp\www\</RUTA>
+	<NOMBRE>Test</NOMBRE>
+	<IDIOMAS>
+		<ca />
+		<es />
+	</IDIOMAS>	
+	<ELEMENTOS>
+		<Contacto>
+			<id_contacto type="int" editable="1" />
+			<descripcion type="text" editable="0" />
+		</Contacto>
+		<INFORMACIO>
+			<id_informacio type="int" editable="0"/>
+			<descripcion type="text" editable="1" />
+			<data type="data"  editable="1" />
+		</INFORMACIO>
+	</ELEMENTOS>
+	<MENU>
+		<CONTACTO />
+		<INFORMACIO>
+			<INFO1 />
+			<INFO2 />
+		</INFORMACIO>
+		<INFORMA2>
+			<INFO1 />
+			<INFO2 />
+		</INFORMA2>
+	</MENU>
+</XML>
