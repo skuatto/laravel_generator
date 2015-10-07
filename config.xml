@@ -12,11 +12,11 @@
 			<descripcion type="text" editable="1" />
       <pdf type="file" editable="1" />
 		</Contacto>
-		<INFORMACIO>
+		<Informacio>
 			<idinformacio type="int" editable="0"/>
 			<descripcion type="text" editable="1" />
 			<data type="data"  editable="1" />
-		</INFORMACIO>
+		</Informacio>
 	</ELEMENTOS>
 	<MENU>
 		<CONTACTO />

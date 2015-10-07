@@ -43,7 +43,7 @@ namespace LARAVEL_WEB_GENERATOR
 		        return Redirect::back()->withInput()->withErrors($validation->errors);
 	        }}
         }}
-        ";
+        ?>";
 
 
         public static void writeFiles(XmlModel model)
