@@ -13,28 +13,53 @@ namespace LARAVEL_WEB_GENERATOR
         private static string rutaController = @"\app\Controllers\";
         private static string rutaControllerAdmin = @"\app\Controllers\admin\";
 
-        private static string plantillaController = 
-        @"<?php
-            class {0}Controller extends Controller {{
-	      
-	            protected function setupLayout()
-	            {{
-		            if ( ! is_null($this->layout))
-		            {{
-			            $this->layout = View::make($this->layout);
-		            }}
-	            }}
+        private static string plantillaController =
+        @"<?php namespace App\Controllers\Admin;
 
-            }}
-        ?>";
+        use App\Services\Validators\{0}Validator;
+        use Input, Notification, Sentry, Redirect, Str, View;
 
-        
+        class {0}Controller extends \BaseController {{
 
-        public static void writeControllerFile(XmlModel model)
+	
+	        public function edit()
+	        {{
+		        return View::make('admin.{0}.edit')->with('idiomas', \Idioma::All())
+													         ->with('{1}', \{0}::first())
+													         ->with('navegador_active', {2});
+	        }}
+
+	        public function update()
+	        {{
+		        $validation = new {0}Validator;
+
+		        if ($validation->passes())
+		        {{   
+			        {3}
+			
+			        Notification::success('Los cambios fueron guardados correctamente.');
+			        return Redirect::route('admin.{1}.edit');
+		        }}
+		        return Redirect::back()->withInput()->withErrors($validation->errors);
+	        }}
+        }}
+        ";
+
+
+        public static void writeFiles(XmlModel model)
         {
-            foreach ( var elemento in model.elementos)
+            int i = 1;
+            foreach (var elemento in model.elementos)
             {
-                string programacionCampo = "";
+                writeControllerFile(model, elemento, i);
+                i++;
+            }
+        }
+
+        public static void writeControllerFile(XmlModel model, Elemento elemento, int posicion)
+        {
+            string programacionCampo = "";
+                
                 List<Campo> listaText = new List<Campo>();
                 List<Campo> listaFile = new List<Campo>();
                 List<Campo> listaData = new List<Campo>();
@@ -52,7 +77,7 @@ namespace LARAVEL_WEB_GENERATOR
                 }
                 if (listaText.Count > 0)
                 {
-                  
+
                     string programacionCampoTexto = "";
                     foreach (Campo text in listaText)
                     {
@@ -76,17 +101,8 @@ namespace LARAVEL_WEB_GENERATOR
                                 }}
                             }}
                         }}", programacionCampoTexto);
-
-
                 }
-                /*
-                
-                            case "text":    programacionCampo + = String.Format(@"",);
-                                            
-                 */
-
-                write(model.nombre + rutaControllerAdmin + elemento.nombre + "Controller.php", String.Format(plantillaController, elemento.nombre));
-            }
+                write(model.nombre + rutaControllerAdmin + elemento.nombre + "Controller.php", String.Format(plantillaController, elemento.nombre, elemento.nombre.ToLower(), posicion, programacionCampo));
         }
 
         private static void write(string path,string text)
