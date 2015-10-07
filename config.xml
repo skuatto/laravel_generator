@@ -8,11 +8,12 @@
 	</IDIOMAS>	
 	<ELEMENTOS>
 		<Contacto>
-			<id_contacto type="int" editable="1" />
-			<descripcion type="text" editable="0" />
+			<idcontacto type="int" editable="0" />
+			<descripcion type="text" editable="1" />
+      <pdf type="file" editable="1" />
 		</Contacto>
 		<INFORMACIO>
-			<id_informacio type="int" editable="0"/>
+			<idinformacio type="int" editable="0"/>
 			<descripcion type="text" editable="1" />
 			<data type="data"  editable="1" />
 		</INFORMACIO>

@@ -35,7 +35,7 @@ namespace LARAVEL_WEB_GENERATOR
            */
             
             var model = XmlReader.LeerXML("config.xml");
-            CreateLaravelFiles.writeControllerFile(@"test\app\Controllers\", model.elementos.First().nombre); 
+            CreateLaravelFiles.writeControllerFile( model ); 
 
            
         }
