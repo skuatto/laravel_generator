@@ -2,31 +2,32 @@
 <XML>
 	<RUTA>c:\wamp\www\</RUTA>
 	<NOMBRE>Test</NOMBRE>
+  <DESCRIPCION>Test @!!</DESCRIPCION>
 	<IDIOMAS>
-		<ca />
-		<es />
+    <ca>Català</ca>
+    <es>Español</es>
 	</IDIOMAS>	
 	<ELEMENTOS>
-		<Contacto>
+		<Contacto singular="1" descripcion="Contacto">
 			<idcontacto type="int" editable="0" />
-			<descripcion type="text" editable="1" />
-      <pdf type="file" editable="1" />
+      <descripcion type="textarea" multidioma="1" editable="1">Descripción</descripcion>
+      <pdf type="file" editable="1">PDFS</pdf>
 		</Contacto>
-		<Informacio>
+		<Informacio singular="1" descripcion="Información">
 			<idinformacio type="int" editable="0"/>
-			<descripcion type="text" editable="1" />
-			<data type="data"  editable="1" />
+      <descripcion type="text" multidioma="0" editable="1">Descriptioon</descripcion>
+      <data type="data"  editable="1">Fecha</data>
 		</Informacio>
 	</ELEMENTOS>
 	<MENU>
-		<CONTACTO />
-		<INFORMACIO>
-			<INFO1 />
-			<INFO2 />
-		</INFORMACIO>
-		<INFORMA2>
-			<INFO1 />
-			<INFO2 />
-		</INFORMA2>
+		<Contacto descripcion="Contacto"/>
+		<Informacio descripcion="Informacio">
+      <Info1>Informacio 1</Info1>
+      <Info2>Informacio 2</Info2>
+		</Informacio>
+    <InformacionContacto descripcion="Informacion de contacto">
+      <Info1>Informacio 1</Info1>
+      <Info2>Informacio 2</Info2>
+		</InformacionContacto>
 	</MENU>
 </XML>

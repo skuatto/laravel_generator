@@ -10,6 +10,7 @@ namespace LARAVEL_WEB_GENERATOR
     {
         public string Ruta { get; set; }
         public string Nombre { get; set; }
+        public string Descripcion { get; set; }
 
         public List<Idioma> Idiomas { get; set; }
         public List<Elemento> Elementos { get; set; }
@@ -19,12 +20,14 @@ namespace LARAVEL_WEB_GENERATOR
     public class Idioma
     {
         public string Nombre { get; set; }
-
+        public string Descripcion { get; set; }
     }
 
     public class Elemento
     {
         public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+        public bool Singular { get; set; }
         public List<Campo> Campos { get; set; }
     }
 
@@ -32,17 +35,21 @@ namespace LARAVEL_WEB_GENERATOR
     {
         public string Nombre { get; set; }
         public string Tipo { get; set; }
+        public string Descripcion { get; set; }
         public bool Editable { get; set; }
+        public bool MultiIdioma { get; set; }
    }
 
     public class Menu
     {
         public string Nombre { get; set; }
+        public string Descripcion { get; set; }
         public List<SubMenu> Submenu { get; set; }
     }
 
     public class SubMenu
     {
         public string Nombre { get; set; }
+        public string Descripcion { get; set; }
     }
 }
