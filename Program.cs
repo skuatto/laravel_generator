@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,6 @@ namespace LARAVEL_WEB_GENERATOR
     {
         static void Main(string[] args)
         {
-            Unzip.Extract("lvl4_base_multi_idoma.zip", @"test\");
 
             
             /*
@@ -33,10 +33,17 @@ namespace LARAVEL_WEB_GENERATOR
            );
              
            */
-            
+            /*
             var model = XmlReader.LeerXML("config.xml");
-           // CreateLaravelFiles.WriteFiles(model);
-            ModifyFiles.ModifyDatabase(model.Nombre, model.Nombre.ToLower());
+            Unzip.Extract("lvl4_base_multi_idoma.zip", model.Ruta, model.Nombre.ToLower() + "\\");
+
+            CreateLaravelFiles.WriteFiles(model);
+            ModifyFiles.ModifyAllFiles(model);
+            */
+            ProcessStartInfo info = new ProcessStartInfo("cmd.exe");
+            info.Arguments = "dir c:\\temp\\";
+            Process.Start(info);
+            
 
         }
     }

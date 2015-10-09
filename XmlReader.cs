@@ -22,8 +22,9 @@ namespace LARAVEL_WEB_GENERATOR
                 {
                     Ruta = documentoXML.Descendants("RUTA").First().Value,
                     Nombre = documentoXML.Descendants("NOMBRE").First().Value,
-                    Descripcion = documentoXML.Descendants("DESCRIPCION").First().Value,,
-                    Idiomas = documentoXML.Descendants("IDIOMAS").Elements().Select(x => new Idioma { Nombre = x.Name.ToString() }).ToList(),
+                    Descripcion = documentoXML.Descendants("DESCRIPCION").First().Value,
+                    Idiomas = documentoXML.Descendants("IDIOMAS").Elements().Select(x => new Idioma { Nombre = x.Name.ToString(), Descripcion = x.Value }).ToList(),
+                   
                     Elementos = documentoXML.Descendants("ELEMENTOS").Elements().Select
                     (
                         x => new Elemento
@@ -36,7 +37,7 @@ namespace LARAVEL_WEB_GENERATOR
                             ).ToList()
                         }
                     ).ToList(),
-
+                   
                     Menus = documentoXML.Descendants("MENU").Elements().Select
                     (
                         x => new Menu 

@@ -12,10 +12,11 @@ namespace LARAVEL_WEB_GENERATOR
     {
         static string fileName = "lvl4_base_multi_idoma";
 
-        public static void Extract(string nombeArchivo, string rutaExtraer)
+        public static void Extract(string nombeArchivo, string unpackDirectory, string rutaExtraer)
         {
             string zipToUnpack = nombeArchivo;
-            string unpackDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            //string unpackDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            
             if (!Directory.Exists(unpackDirectory + rutaExtraer))
             {
                 using (ZipFile zip = ZipFile.Read(zipToUnpack))

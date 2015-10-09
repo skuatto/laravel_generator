@@ -11,7 +11,7 @@ namespace LARAVEL_WEB_GENERATOR
     {
         private static string rutaController = @"\app\Controllers\";
         private static string rutaControllerAdmin = @"\app\Controllers\admin\";
-        private static string rutaValidator = @"\app\Controllers\Services\Validators\";
+        private static string rutaValidator = @"\app\Services\Validators\";
         private static string rutaModel = @"\app\models\";
         private static string rutaViewAdmin = @"\app\views\admin\";
 
@@ -121,6 +121,9 @@ namespace LARAVEL_WEB_GENERATOR
             foreach (var elemento in model.Elementos)
             {
                 WriteControllerFile(model, elemento, i);
+                WriteValidatorFile(model, elemento);
+                WriteModelFile(model, elemento);
+                WriteEditViewFile(model, elemento);
                 i++;
             }
         }
@@ -176,12 +179,13 @@ namespace LARAVEL_WEB_GENERATOR
                             }}", programacionCampoTexto);
                     }
                 }
+
                 Write(model.Nombre + rutaControllerAdmin + elemento.Nombre + "Controller.php", String.Format(plantillaController, elemento.Nombre, elemento.Nombre.ToLower(), posicion, programacionCampo));
         }
 
         public static void WriteValidatorFile(XmlModel model, Elemento elemento)
         {
-            Write(model.Nombre + rutaValidator + elemento.Nombre + "Validator.php", String.Format(plantillaValidator, elemento.Nombre));
+            Write(model.Ruta + model.Nombre + rutaValidator + elemento.Nombre + "Validator.php", String.Format(plantillaValidator, elemento.Nombre));
         }
 
         public static void WriteModelFile(XmlModel model, Elemento elemento)
@@ -273,7 +277,7 @@ namespace LARAVEL_WEB_GENERATOR
 
                      }}";
             }
-            Write(model.Nombre + rutaModel + elemento.Nombre + ".php", String.Format(plantillaModel, elemento.Nombre, elemento.Nombre.ToLower(), codigoModelo));
+            Write(model.Ruta + model.Nombre + rutaModel + elemento.Nombre + ".php", String.Format(plantillaModel, elemento.Nombre, elemento.Nombre.ToLower(), codigoModelo));
         }
 
         public static void WriteEditViewFile(XmlModel model, Elemento elemento)
@@ -300,7 +304,7 @@ namespace LARAVEL_WEB_GENERATOR
                     <ul class=""nav nav-tabs"">
                         @for( $i=0; $i < sizeof($idiomas); $i++)
                         <li id=""nav_tab_{{ $i }}"" @if ($i==0) class=""active"" @endif>
-                            <a href=""javascript:cambiarPestanya('{{ $i }}')"">{{$idiomas[$i]->nombre}}</a>
+                            <a href=""javascript:cambiarPestanya('{{ $i }}')"">{{{{$idiomas[$i]->nombre}}}}</a>
                         </li>
                         @endfor
                     </ul>
@@ -315,31 +319,76 @@ namespace LARAVEL_WEB_GENERATOR
                {
                    case "textarea": textCode = String.Format(@"
                                      @for( $i=0; $i < sizeof($idiomas); $i++)
-                                        <div class=""tab control-group"" id=""tab_{{ $i }}"">
-                                            {{ Form::label('{0}', '{1}: ') }}
+                                        <div class=""tab control-group"" id=""tab_{{{{ $i }}}}"">
+                                            {{{{ Form::label('{0}', '{1}: ') }}}}
                                             <div class=""controls"">
-                                                {{ Form::textarea('{0}_'.$idiomas[$i]->id, $idiomas[$i]->{0}, array('class' => 'ckeditor_textarea', 'id' => '{0}_'.$idiomas[$i]->id) ) }}
+                                                {{{{ Form::textarea('{0}_'.$idiomas[$i]->id, $idiomas[$i]->{0}, array('class' => 'ckeditor_textarea', 'id' => '{0}_'.$idiomas[$i]->id) ) }}}}
                                             </div>
                                         </div>
                                     @endfor
                                     ", campo.Nombre.ToLower(),campo.Descripcion);
                                     break;
+                   case "int":
                     case "text": textCode = String.Format(@"
                                     @for( $i=0; $i < sizeof($idiomas); $i++)
-                                    <div class=""tab control-group"" id=""tab_{{ $i }}"">
-                                        {{ Form::label('{0}', '{1}: ') }}
+                                    <div class=""tab control-group"" id=""tab_{{ $i }}}}"">
+                                        {{{{ Form::label('{0}', '{1}: ') }}
                                         <div class=""controls"">
-                                            {{ Form::textarea('{0}_'.$idiomas[$i]->id, $idiomas[$i]->{0}, array('class' => 'ckeditor_textarea', 'id' => '{0}_'.$idiomas[$i]->id) ) }}
+                                            {{{{ Form::text('{0}_'.$idiomas[$i]->id, $idiomas[$i]->{0}, array('class' => 'ckeditor_textarea', 'id' => '{0}_'.$idiomas[$i]->id) ) }}}}
                                         </div>
                                     </div>
                                 @endfor
                                 ", campo.Nombre.ToLower(),campo.Descripcion);
                                 break;
                }
-               }
-            } 
-                                 
-            Write(model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower() + "/edit.blade.php", String.Format(plantillaViewAdminEdit,elemento.Nombre.ToLower(), elemento.Descripcion, scriptCode, tabCode, textCode));
+                 
+            }
+            foreach (var campo in listaCamposNoMultiIdioma)
+            {
+                switch (campo.Tipo)
+                {
+                    case "int":
+                    case "text": textCode = String.Format(@"{{{{ Form::label('{0}', '{1}: ') }}}}
+                            <div class=""controls"">
+                                    {{{{ Form::text('_{0}',${2}->{0}, array( 'class' => 'input', 'id' => '{0}') ) }}}}
+                            </div>", campo.Nombre.ToLower(),campo.Descripcion, elemento.Nombre.ToLower());
+                        break;
+                    case "imagen": textCode = String.Format(@"
+                                    <div class=""controls"">   
+                                        {{{{ Form::label('{0}', '{1}: ') }}}}
+                                        <div class=""fileupload2 fileupload2-new"" data-provides=""fileupload2"">
+                                           <div class=""fileupload2-preview thumbnail"" style=""width: 200px; height: 150px;"">
+                                                @if (count(${2}->imagen()->first())>0)
+                                                    <a href=""{{{{ ${2}->imagen()->first()->src; }}}}""><img src=""{{{{ Image::resize(${2}->imagen()->first()->src, 200, 150); }}}}"" ></a>
+                                                @else
+                                                    <img src=""http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=sin+imagen"">
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <span class=""btn btn-file""><span class=""fileupload2-new"">Selecciona una imagen</span><span class=""fileupload2-exists"">Cambiar</span>{{{{ Form::file('_{0}') }}}}</span>
+                                                <a href=""#"" class=""btn fileupload2-exists"" data-dismiss=""fileupload2"">Quitar</a>
+                                            </div>
+                                        </div>
+                                     </div>", campo.Nombre.ToLower(),campo.Descripcion, elemento.Nombre.ToLower());
+                                break;
+                    case "data": textCode = String.Format(@"
+                                {{{{ Form::label('{0}', '{1}: ') }}}}
+                                <div class=""controls"">
+                                   {{{{ Form::text('{0}',\Helper::mostrarFechaEditar(${2}->{0}), array( 'class' => 'input-medium datepick', 'id' => '{0}') ) }}}}
+                                </div>", campo.Nombre.ToLower(), campo.Descripcion, elemento.Nombre.ToLower());
+                                break;
+                  
+                }
+            }
+
+            // Falta generar todas las migas de pan
+            string breadcumb = String.Format(
+                @"<div style=""margin-bottom: 20px;"">
+                    <a href=""{{{{ URL::route('admin.{0}.index') }}}}"" class=""btn btn-success""><i class=""icon-zoom-in""></i>&nbsp;{1}</a>
+                </div>", elemento.Nombre.ToLower(), elemento.Descripcion);
+
+            System.IO.Directory.CreateDirectory(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower());
+            Write(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower() + "/edit.blade.php", String.Format(plantillaViewAdminEdit, elemento.Nombre.ToLower(), elemento.Descripcion, scriptCode, breadcumb, tabCode, textCode));
         }
 
 

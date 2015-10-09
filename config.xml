@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <XML>
-	<RUTA>c:\wamp\www\</RUTA>
-	<NOMBRE>Test</NOMBRE>
+	<RUTA>C:\Proyectos\PHP\</RUTA>
+	<NOMBRE>laraveltest</NOMBRE>
   <DESCRIPCION>Test @!!</DESCRIPCION>
 	<IDIOMAS>
     <ca>Català</ca>
@@ -9,14 +9,15 @@
 	</IDIOMAS>	
 	<ELEMENTOS>
 		<Contacto singular="1" descripcion="Contacto">
-			<idcontacto type="int" editable="0" />
+			<idcontacto type="int" editable="0" multidioma="0" />
       <descripcion type="textarea" multidioma="1" editable="1">Descripción</descripcion>
-      <pdf type="file" editable="1">PDFS</pdf>
+      <pdf type="pdf" editable="1" multidioma="0">PDFS</pdf>
 		</Contacto>
-		<Informacio singular="1" descripcion="Información">
-			<idinformacio type="int" editable="0"/>
-      <descripcion type="text" multidioma="0" editable="1">Descriptioon</descripcion>
-      <data type="data"  editable="1">Fecha</data>
+		<Informacio singular="1" descripcion="Información" >
+			<idinformacio type="int" editable="0" multidioma="0" />
+      <descripcion type="text" multidioma="0" editable="1">Description</descripcion>
+      <data type="date"  editable="1" multidioma="0">Fecha</data>
+      <imagen type="imagen"  editable="1" multidioma="0">Imagen</imagen>
 		</Informacio>
 	</ELEMENTOS>
 	<MENU>
