@@ -12,6 +12,7 @@ namespace LARAVEL_WEB_GENERATOR
         private static string rutaApp = @"\app\config\app.php";
         private static string rutaRoutes = @"\app\routes.php";
         private static string rutaLayoutInside = @"\app\views\admin\_layouts\inside.blade.php";
+        private static string rutaAuthController = @"\app\controllers\admin\AuthController.php";
 
         public static void ModifyAllFiles(XmlModel model)
         {
@@ -20,11 +21,26 @@ namespace LARAVEL_WEB_GENERATOR
             ModifyApp(model);
             AppendMenu(model);
             int i = 1;
+            int linea = 31;
             foreach (var elemento in model.Elementos)
             {
-                ModifyRoute(model, elemento);
+                //Si es el primer elemento sera el elemento por defecto del administrador
+                if (i == 1)
+                {
+                    linea = ModifyRoute(model, elemento, linea, true);
+                    ModifyAuthController(model, elemento);
+                }
+                else
+                {
+                    linea = ModifyRoute(model, elemento, linea);
+                }
                 i++;
             }
+        }
+
+        public static void ModifyAuthController(XmlModel model, Elemento elemento)
+        {
+            ModifyLine(model.Ruta + model.Nombre + '\\' + rutaAuthController, String.Format(@"                               return Redirect::route('admin.{0}.edit');", elemento.Nombre.ToLower()), 33);
         }
 
         public static void ModifyDatabase(XmlModel model)
@@ -96,20 +112,22 @@ namespace LARAVEL_WEB_GENERATOR
         }
 
         //Individual para cada elemento
-        public static void ModifyRoute(XmlModel model, Elemento elemento)
+        public static int ModifyRoute(XmlModel model, Elemento elemento, int linea = 31, bool first = false )
         {
-            string textToAppend = String.Format(
-                @"
-                    Route::get('/',                'App\Controllers\Admin\{0}Controller@edit');
-	                Route::post('/',                'App\Controllers\Admin\{0}Controller@update');
-                ", elemento.Nombre);
+            string textToAppend = "";
+            if (first)
+            {
+                textToAppend += String.Format(
+                    @"    Route::get('/',                'App\Controllers\Admin\{0}Controller@edit');
+                          Route::post('/',                'App\Controllers\Admin\{0}Controller@update');"
+                    , elemento.Nombre);
+            }
             if (elemento.Singular)
             {
                 textToAppend += String.Format(@"
             	    Route::get('{0}', array('as' => 'admin.{0}.edit', 'uses' => 'App\Controllers\Admin\{1}Controller@edit'));
-	                Route::post('{0}', array('as' => 'admin.{0}.update', 'uses' => 'App\Controllers\Admin\{1}Controller@update'));
-
-                ", elemento.Nombre.ToLower(), elemento.Nombre);
+	                Route::post('{0}', array('as' => 'admin.{0}.update', 'uses' => 'App\Controllers\Admin\{1}Controller@update'));"
+                    , elemento.Nombre.ToLower(), elemento.Nombre);
             }
             else
             {
@@ -118,11 +136,11 @@ namespace LARAVEL_WEB_GENERATOR
 	                Route::get('{0}/publicar/{{id_{0}}}', array('as' => 'admin.{0}.publicar', 'uses' => 'App\Controllers\Admin\{1}Controller@publicar'));
 	                Route::get('{0}/ordenarArriba/{{id_{0}}}', array('as' => 'admin.{0}.ordenarArriba', 'uses' => 'App\Controllers\Admin\{1}Controller@ordenarArriba'));
 	                Route::get('{0}/ordenarAbajo/{{id_{0}}}', array('as' => 'admin.{0}.ordenarAbajo', 'uses' => 'App\Controllers\Admin\{1}Controller@ordenarAbajo'));
-
                 ", elemento.Nombre.ToLower(), elemento.Nombre);
             }
 
-            AppendLines(model.Ruta + model.Nombre + '\\' + rutaRoutes, textToAppend, 31);
+            AppendLines(model.Ruta + model.Nombre + '\\' + rutaRoutes, textToAppend, linea);
+            return linea + textToAppend.Count(x => x == '\n') + 1;
         }
 
         private static void ModifyLine(string path, string text, int line)

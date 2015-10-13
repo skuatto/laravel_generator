@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleCommand.cs" />
     <Compile Include="CreateLaravelFiles.cs" />
     <Compile Include="ModifyFiles.cs" />
     <Compile Include="Program.cs" />

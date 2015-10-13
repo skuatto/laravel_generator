@@ -10,7 +10,7 @@ namespace LARAVEL_WEB_GENERATOR
     public class CreateLaravelFiles
     {
         private static string rutaController = @"\app\Controllers\";
-        private static string rutaControllerAdmin = @"\app\Controllers\admin\";
+        private static string rutaControllerAdmin = @"\app\controllers\admin\";
         private static string rutaValidator = @"\app\Services\Validators\";
         private static string rutaModel = @"\app\models\";
         private static string rutaViewAdmin = @"\app\views\admin\";
@@ -169,7 +169,7 @@ namespace LARAVEL_WEB_GENERATOR
                             @"foreach (Input::all() as $input => $input_valor ) {{
 				                if(preg_match(""/^[^_]/"",$input)){{
 					                //Si el texto no esta vacio le hacemos update
-					                if(trim($input_valor) != ""){{
+					                if(trim($input_valor) != """"){{
 						                $idIdioma = explode('_', $input);
 						                switch($idIdioma[0]){{
                                             {0}
@@ -180,7 +180,7 @@ namespace LARAVEL_WEB_GENERATOR
                     }
                 }
 
-                Write(model.Nombre + rutaControllerAdmin + elemento.Nombre + "Controller.php", String.Format(plantillaController, elemento.Nombre, elemento.Nombre.ToLower(), posicion, programacionCampo));
+                Write(model.Ruta + model.Nombre + '\\' + rutaControllerAdmin + elemento.Nombre + "Controller.php", String.Format(plantillaController, elemento.Nombre, elemento.Nombre.ToLower(), posicion, programacionCampo));
         }
 
         public static void WriteValidatorFile(XmlModel model, Elemento elemento)
@@ -304,7 +304,7 @@ namespace LARAVEL_WEB_GENERATOR
                     <ul class=""nav nav-tabs"">
                         @for( $i=0; $i < sizeof($idiomas); $i++)
                         <li id=""nav_tab_{{ $i }}"" @if ($i==0) class=""active"" @endif>
-                            <a href=""javascript:cambiarPestanya('{{ $i }}')"">{{{{$idiomas[$i]->nombre}}}}</a>
+                            <a href=""javascript:cambiarPestanya('{{ $i }}')"">{{$idiomas[$i]->nombre}}</a>
                         </li>
                         @endfor
                     </ul>
@@ -382,10 +382,11 @@ namespace LARAVEL_WEB_GENERATOR
             }
 
             // Falta generar todas las migas de pan
+            string rutaControlador = (elemento.Singular) ? "edit" : "index";
             string breadcumb = String.Format(
                 @"<div style=""margin-bottom: 20px;"">
-                    <a href=""{{{{ URL::route('admin.{0}.index') }}}}"" class=""btn btn-success""><i class=""icon-zoom-in""></i>&nbsp;{1}</a>
-                </div>", elemento.Nombre.ToLower(), elemento.Descripcion);
+                    <a href=""{{{{ URL::route('admin.{0}.{2}') }}}}"" class=""btn btn-success""><i class=""icon-zoom-in""></i>&nbsp;{1}</a>
+                </div>", elemento.Nombre.ToLower(), elemento.Descripcion, rutaControlador);
 
             System.IO.Directory.CreateDirectory(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower());
             Write(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower() + "/edit.blade.php", String.Format(plantillaViewAdminEdit, elemento.Nombre.ToLower(), elemento.Descripcion, scriptCode, breadcumb, tabCode, textCode));
