@@ -34,14 +34,15 @@ namespace LARAVEL_WEB_GENERATOR
            */
             
             var model = XmlReader.LeerXML("config.xml");
-            Unzip.Extract("lvl4_base_multi_idoma.zip", model.Ruta, model.Nombre.ToLower() + "\\");
-
-            //CreateLaravelFiles.WriteFiles(model);
+            Console.Read();
+           // Unzip.Extract("lvl4_base_multi_idoma.zip", model.Ruta, model.Nombre.ToLower() + "\\");
+           
+          //   CreateLaravelFiles.WriteFiles(model);
           //  ModifyFiles.ModifyAllFiles(model);
             //ModifyFiles.ModifyAuthController(model, model.Elementos.FirstOrDefault());
             
             
-            ConsoleCommand.Execute(new List<String> { "cd " + model.Ruta + model.Nombre + "\\", @"composer dump-autoload" });
+            //ConsoleCommand.Execute(new List<String> { "cd " + model.Ruta + model.Nombre + "\\", @"composer dump-autoload" });
             
         }
     }

@@ -31,9 +31,16 @@ namespace LARAVEL_WEB_GENERATOR
                         {
                             Nombre = x.Name.ToString(),
                             Descripcion = x.Attribute("descripcion").Value,
-                            Singular = (int.Parse(x.Attribute("singular").Value) == 1) ? true : false,
+                            Singular = x.HasAttributeBool("singular"),
                             Campos = x.Elements().Select(
-                                e => new Campo { Nombre = e.Name.ToString(), Descripcion = e.Value, Tipo = e.Attribute("type").Value.ToString(), Editable = (int.Parse(e.Attribute("editable").Value) == 1) ? true : false,  MultiIdioma = (int.Parse(e.Attribute("multidioma").Value) == 1) ? true : false }
+                                e => new Campo { Nombre = e.Name.ToString(), 
+                                                Descripcion = e.Value,
+                                                Tipo = e.Attribute("type").Value.ToString(),
+                                                Editable = e.HasAttributeBool("editable"),
+                                                MultiIdioma = e.HasAttributeBool("multidioma"),
+                                                RelacionCampo = e.HasAttributeString("relacion_campo"),
+                                                 RelacionHijo = e.HasAttributeString("relacion_hijo")
+                                            }
                             ).ToList()
                         }
                     ).ToList(),

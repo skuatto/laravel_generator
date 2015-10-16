@@ -29,6 +29,7 @@ namespace LARAVEL_WEB_GENERATOR
         public string Descripcion { get; set; }
         public bool Singular { get; set; }
         public List<Campo> Campos { get; set; }
+        public List<Elemento> Elementos  { get; set; }
     }
 
     public class Campo
@@ -36,8 +37,12 @@ namespace LARAVEL_WEB_GENERATOR
         public string Nombre { get; set; }
         public string Tipo { get; set; }
         public string Descripcion { get; set; }
+        public string RelacionHijo { get; set; }
+        public string RelacionCampo { get; set; }
         public bool Editable { get; set; }
         public bool MultiIdioma { get; set; }
+        
+
    }
 
     public class Menu
@@ -52,4 +57,5 @@ namespace LARAVEL_WEB_GENERATOR
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
     }
+
 }

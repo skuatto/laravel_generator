@@ -14,9 +14,9 @@ namespace LARAVEL_WEB_GENERATOR
         private static string rutaValidator = @"\app\Services\Validators\";
         private static string rutaModel = @"\app\models\";
         private static string rutaViewAdmin = @"\app\views\admin\";
-
-        private static string plantillaViewAdminEdit = @"
-            @extends('admin._layouts.inside')
+        
+        private static string plantillaViewAdminEdit =
+          @"@extends('admin._layouts.inside')
             @section('js_ready')
                {2}
 
@@ -30,39 +30,37 @@ namespace LARAVEL_WEB_GENERATOR
 
             @section('submain')
 
-                {{ Notification::showAll() }}
+                {{{{ Notification::showAll() }}}}
 
                 @if ($errors->any())
                 <div class=""alert alert-error"">
-                    {{ implode('<br>', $errors->all()) }}
+                    {{{{ implode('<br>', $errors->all()) }}}}
                 </div>
                 @endif
 
                 {3}
 
-                 {{ Form::open(array('method' => 'post', 'files' => true)) }}
+                 {{{{ Form::open(array('method' => 'post', 'files' => true)) }}}}
 
                {4}
                 <div class=""contenidoEditable"">
                     <div class=""row-fluid"">
                         <div class=""span10"">
                              {5}
-                             </div>
-
                             <div class=""form-actions"">
-                                {{ Form::submit('Guardar', array('class' => 'btn btn-primary')) }}
-                                <a href=""{{ URL::route('admin.{0}.edit') }}"" class=""btn"">Cancelar</a>
+                                {{{{ Form::submit('Guardar', array('class' => 'btn btn-primary')) }}}}
+                                <a href=""{{ URL::route('admin.{0}.edit') }}}}"" class=""btn"">Cancelar</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                {{ Form::close() }}
+                {{{{ Form::close() }}}}
 
             @stop
         ";
 
-        private static string plantillaModel = @"
-                <?php
+        private static string plantillaModel =
+              @"<?php
 
                 class {0} extends Eloquent {{
 	                protected $table = '{1}';
@@ -71,8 +69,8 @@ namespace LARAVEL_WEB_GENERATOR
 
         ?>";
 
-        private static string plantillaValidator = @"
-        <?php namespace App\Services\Validators;
+        private static string plantillaValidator =
+        @"<?php namespace App\Services\Validators;
  
             class {0}Validator extends Validator {{
  
@@ -162,7 +160,7 @@ namespace LARAVEL_WEB_GENERATOR
 								    ${1} = \Idioma::find($idIdioma[1]);
 								    ${1}->{2} = $input_valor;
 								    ${1}->save();	
-							    break;", text.Nombre.ToLower(), model.Nombre.ToLower(), text.Nombre.ToLower());
+							    break;", text.Nombre.ToLower(), model.Nombre.ToLower(), text.Nombre.ToLower() + '_' + elemento.Nombre.ToLower());
                         }
 
                         programacionCampo += String.Format(
@@ -311,8 +309,8 @@ namespace LARAVEL_WEB_GENERATOR
                     ";
             }
             
-            List<Campo> listaCamposMultiIdioma = elemento.Campos.Select(x => new Campo{ Descripcion = x.Descripcion, Nombre = x.Nombre, Editable = x.Editable, Tipo = x.Tipo}).Where(x => x.MultiIdioma).ToList();
-            List<Campo> listaCamposNoMultiIdioma = elemento.Campos.Select(x => new Campo{ Descripcion = x.Descripcion, Nombre = x.Nombre, Editable = x.Editable, Tipo = x.Tipo}).Where(x => !x.MultiIdioma).ToList();
+            List<Campo> listaCamposMultiIdioma = elemento.Campos.Select(x => new Campo{ Descripcion = x.Descripcion, Nombre = x.Nombre, Editable = x.Editable, Tipo = x.Tipo, MultiIdioma = x.MultiIdioma}).Where(x => x.MultiIdioma == true && x.Editable == true).ToList();
+            List<Campo> listaCamposNoMultiIdioma = elemento.Campos.Select(x => new Campo { Descripcion = x.Descripcion, Nombre = x.Nombre, Editable = x.Editable, Tipo = x.Tipo, MultiIdioma = x.MultiIdioma }).Where(x => !x.MultiIdioma && x.Editable).ToList();
             foreach ( var campo in  listaCamposMultiIdioma )
             {
                switch (campo.Tipo)
@@ -322,11 +320,11 @@ namespace LARAVEL_WEB_GENERATOR
                                         <div class=""tab control-group"" id=""tab_{{{{ $i }}}}"">
                                             {{{{ Form::label('{0}', '{1}: ') }}}}
                                             <div class=""controls"">
-                                                {{{{ Form::textarea('{0}_'.$idiomas[$i]->id, $idiomas[$i]->{0}, array('class' => 'ckeditor_textarea', 'id' => '{0}_'.$idiomas[$i]->id) ) }}}}
+                                                {{{{ Form::textarea('{0}_'.$idiomas[$i]->id, $idiomas[$i]->{2}, array('class' => 'ckeditor_textarea', 'id' => '{0}_'.$idiomas[$i]->id) ) }}}}
                                             </div>
                                         </div>
                                     @endfor
-                                    ", campo.Nombre.ToLower(),campo.Descripcion);
+                                    ", campo.Nombre.ToLower(), campo.Descripcion, campo.Nombre.ToLower() + '_' + elemento.Nombre.ToLower());
                                     break;
                    case "int":
                     case "text": textCode = String.Format(@"
@@ -334,11 +332,11 @@ namespace LARAVEL_WEB_GENERATOR
                                     <div class=""tab control-group"" id=""tab_{{ $i }}}}"">
                                         {{{{ Form::label('{0}', '{1}: ') }}
                                         <div class=""controls"">
-                                            {{{{ Form::text('{0}_'.$idiomas[$i]->id, $idiomas[$i]->{0}, array('class' => 'ckeditor_textarea', 'id' => '{0}_'.$idiomas[$i]->id) ) }}}}
+                                            {{{{ Form::text('{0}_'.$idiomas[$i]->id, $idiomas[$i]->{2}, array('class' => 'ckeditor_textarea', 'id' => '{0}_'.$idiomas[$i]->id) ) }}}}
                                         </div>
                                     </div>
                                 @endfor
-                                ", campo.Nombre.ToLower(),campo.Descripcion);
+                                ", campo.Nombre.ToLower(), campo.Descripcion, campo.Nombre.ToLower() + '_' + elemento.Nombre.ToLower());
                                 break;
                }
                  
@@ -383,10 +381,14 @@ namespace LARAVEL_WEB_GENERATOR
 
             // Falta generar todas las migas de pan
             string rutaControlador = (elemento.Singular) ? "edit" : "index";
+            string breadcumb = "";
+            //El boton debe mostrar si este elemento contiene hijos
+            /*
             string breadcumb = String.Format(
                 @"<div style=""margin-bottom: 20px;"">
                     <a href=""{{{{ URL::route('admin.{0}.{2}') }}}}"" class=""btn btn-success""><i class=""icon-zoom-in""></i>&nbsp;{1}</a>
                 </div>", elemento.Nombre.ToLower(), elemento.Descripcion, rutaControlador);
+            */
 
             System.IO.Directory.CreateDirectory(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower());
             Write(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower() + "/edit.blade.php", String.Format(plantillaViewAdminEdit, elemento.Nombre.ToLower(), elemento.Descripcion, scriptCode, breadcumb, tabCode, textCode));

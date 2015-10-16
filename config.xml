@@ -9,26 +9,34 @@
 	</IDIOMAS>	
 	<ELEMENTOS>
 		<Contacto singular="1" descripcion="Contacto">
-			<idcontacto type="int" editable="0" multidioma="0" />
+			<idcontacto type="int"  />
       <descripcion type="textarea" multidioma="1" editable="1">Descripción</descripcion>
-      <pdf type="pdf" editable="1" multidioma="0">PDFS</pdf>
+      <pdf type="pdf" editable="1" >PDFS</pdf>
 		</Contacto>
 		<Informacio singular="1" descripcion="Información" >
-			<idinformacio type="int" editable="0" multidioma="0" />
-      <descripcion type="text" multidioma="0" editable="1">Description</descripcion>
-      <data type="date"  editable="1" multidioma="0">Fecha</data>
-      <imagen type="imagen"  editable="1" multidioma="0">Imagen</imagen>
+			<idinformacio type="int"  />
+      <descripcion type="text" editable="1">Description</descripcion>
+      <data type="date"  editable="1" >Fecha</data>
+      <imagen type="imagen"  editable="1">Imagen</imagen>
 		</Informacio>
+    <archivos_generales descripcion="Archivos generales">
+      <idarchivos_generales type="int"   />
+      <pdf_idpdf type="int"  relacion_hijo="pdf" relacion_campo="idpdf" />
+      <HIJOS>
+        <pdf singular="1" descripcion="Información">
+          <idpdf type="int" />
+          <descripcion type="text"></descripcion>
+          <url type="text"></url>
+        </pdf>
+      </HIJOS>
+    </archivos_generales>
 	</ELEMENTOS>
 	<MENU>
 		<Contacto descripcion="Contacto"/>
+    <archivos_generales descripcion="Archivos generales"></archivos_generales>
 		<Informacio descripcion="Informacio">
-      <Info1>Informacio 1</Info1>
-      <Info2>Informacio 2</Info2>
+      <Informacio>Informacio 1</Informacio>
+      <Informacio>Informacio 2</Informacio>
 		</Informacio>
-    <InformacionContacto descripcion="Informacion de contacto">
-      <Info1>Informacio 1</Info1>
-      <Info2>Informacio 2</Info2>
-		</InformacionContacto>
 	</MENU>
 </XML>

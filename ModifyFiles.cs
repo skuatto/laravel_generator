@@ -66,7 +66,7 @@ namespace LARAVEL_WEB_GENERATOR
                     string codigoSubmenu = "";
                     foreach (SubMenu submenu in menu.Submenu)
                     {
-                        codigoSubmenu += String.Format(@"       <li><a href=""{{{{ URL::route('admin.{0}.edit') }}}}"">{1}</a></li>", submenu.Nombre.ToLower(),submenu.Descripcion);
+                        codigoSubmenu += String.Format(@"       <li><a href=""{{{{ URL::route('admin.{0}.edit') }}}}"">{1}</a></li>" + Environment.NewLine, submenu.Nombre.ToLower(), submenu.Descripcion);
                     }
                     codeMenu = String.Format(@"
                     <a data-toggle=""dropdown"" class='dropdown-toggle' href=""#"">
@@ -83,7 +83,7 @@ namespace LARAVEL_WEB_GENERATOR
                     codeMenu = String.Format(@"<a href=""{{{{ URL::route('admin.{0}.edit') }}}}"">{1}</a>", menu.Nombre.ToLower(), menu.Descripcion);
                 }
 
-                textToAppend = String.Format(@"
+                textToAppend += String.Format(@"
 	                <li @if($navegador_active == {0}) {1} @endif>
 				        {2}
 			        </li>
