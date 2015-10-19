@@ -34,7 +34,6 @@ namespace LARAVEL_WEB_GENERATOR
            */
             
             var model = XmlReader.LeerXML("config.xml");
-            Console.Read();
            // Unzip.Extract("lvl4_base_multi_idoma.zip", model.Ruta, model.Nombre.ToLower() + "\\");
            
           //   CreateLaravelFiles.WriteFiles(model);

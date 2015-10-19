@@ -15,6 +15,7 @@ namespace LARAVEL_WEB_GENERATOR
         public List<Idioma> Idiomas { get; set; }
         public List<Elemento> Elementos { get; set; }
         public List<Menu> Menus { get; set; }
+
     }
 
     public class Idioma
