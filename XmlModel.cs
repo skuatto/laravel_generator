@@ -42,7 +42,7 @@ namespace LARAVEL_WEB_GENERATOR
         public string RelacionCampo { get; set; }
         public bool Editable { get; set; }
         public bool MultiIdioma { get; set; }
-        
+        public bool MostrarEnIndex { get; set; }
 
    }
 

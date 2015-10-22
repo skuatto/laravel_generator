@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LARAVEL_WEB_GENERATOR", "LARAVEL_WEB_GENERATOR\LARAVEL_WEB_GENERATOR.csproj", "{B07AF41C-0F3C-46FD-9ED5-3B3E45307E09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LARAVEL_WEB_GENERATOR", "LARAVEL_WEB_GENERATOR.csproj", "{B07AF41C-0F3C-46FD-9ED5-3B3E45307E09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
