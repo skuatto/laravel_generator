@@ -19,7 +19,7 @@
       <data type="date"  editable="1" >Fecha</data>
       <imagen type="imagen"  editable="1">Imagen</imagen>
 		</Informacio>
-    <archivos_generales descripcion="Archivos generales">
+    <archivos_generales singular="0" descripcion="Archivos generales">
       <idarchivos_generales type="int"   />
       <descripcion type="text" editable="1">Descripcion</descripcion>
       <pdf_idpdf type="int"  relacion_hijo="pdf" relacion_campo="idpdf" />

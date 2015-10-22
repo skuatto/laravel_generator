@@ -122,22 +122,42 @@ namespace LARAVEL_WEB_GENERATOR
                           Route::post('/',                'App\Controllers\Admin\{0}Controller@update');"
                     , elemento.Nombre);
             }
-            if (elemento.Elementos.Count > 0)
-            {
-                textToAppend += String.Format(@"
-            	    Route::resource('{0}',       'App\Controllers\Admin\{1}Controller');
-	                Route::get('{0}/publicar/{{id_{0}}}', array('as' => 'admin.{0}.publicar', 'uses' => 'App\Controllers\Admin\{1}Controller@publicar'));
-	                Route::get('{0}/ordenarArriba/{{id_{0}}}', array('as' => 'admin.{0}.ordenarArriba', 'uses' => 'App\Controllers\Admin\{1}Controller@ordenarArriba'));
-	                Route::get('{0}/ordenarAbajo/{{id_{0}}}', array('as' => 'admin.{0}.ordenarAbajo', 'uses' => 'App\Controllers\Admin\{1}Controller@ordenarAbajo'));
-                ", elemento.Nombre.ToLower(), elemento.Nombre);
-            }
-            else
+            if (elemento.Singular)
             {
                 textToAppend += String.Format(@"
             	    Route::get('{0}', array('as' => 'admin.{0}.edit', 'uses' => 'App\Controllers\Admin\{1}Controller@edit'));
 	                Route::post('{0}', array('as' => 'admin.{0}.update', 'uses' => 'App\Controllers\Admin\{1}Controller@update'));"
                     , elemento.Nombre.ToLower(), elemento.Nombre);
-                
+            }
+            else
+            {
+                if(elemento.Elementos.Count > 0)
+                {
+                    textToAppend += String.Format(@"
+                        Route::get('{0}', array('as' => 'admin.{0}.edit', 'uses' => 'App\Controllers\Admin\{1}Controller@edit'));
+                        Route::post('{0}', array('as' => 'admin.{0}.update', 'uses' => 'App\Controllers\Admin\{1}Controller@update'));
+                    ", elemento.Nombre.ToLower(), elemento.Nombre);
+
+                    foreach(var hijo in elemento.Elementos)
+                    {
+                        textToAppend += String.Format(@"
+            	            Route::resource('{0}',       'App\Controllers\Admin\{1}Controller');
+	                        Route::get('{0}/publicar/{{id_{0}}}', array('as' => 'admin.{0}.publicar', 'uses' => 'App\Controllers\Admin\{1}Controller@publicar'));
+	                        Route::get('{0}/ordenarArriba/{{id_{0}}}', array('as' => 'admin.{0}.ordenarArriba', 'uses' => 'App\Controllers\Admin\{1}Controller@ordenarArriba'));
+	                        Route::get('{0}/ordenarAbajo/{{id_{0}}}', array('as' => 'admin.{0}.ordenarAbajo', 'uses' => 'App\Controllers\Admin\{1}Controller@ordenarAbajo'));
+                        ", hijo.Nombre.ToLower(), hijo.Nombre);
+                    }
+                }
+                else
+                {
+                    textToAppend += String.Format(@"
+            	        Route::resource('{0}',       'App\Controllers\Admin\{1}Controller');
+	                    Route::get('{0}/publicar/{{id_{0}}}', array('as' => 'admin.{0}.publicar', 'uses' => 'App\Controllers\Admin\{1}Controller@publicar'));
+	                    Route::get('{0}/ordenarArriba/{{id_{0}}}', array('as' => 'admin.{0}.ordenarArriba', 'uses' => 'App\Controllers\Admin\{1}Controller@ordenarArriba'));
+	                    Route::get('{0}/ordenarAbajo/{{id_{0}}}', array('as' => 'admin.{0}.ordenarAbajo', 'uses' => 'App\Controllers\Admin\{1}Controller@ordenarAbajo'));
+                    ", elemento.Nombre.ToLower(), elemento.Nombre);
+                }
+
             }
 
             AppendLines(model.Ruta + model.Nombre + '\\' + rutaRoutes, textToAppend, linea);

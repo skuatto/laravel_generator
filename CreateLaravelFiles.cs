@@ -14,7 +14,7 @@ namespace LARAVEL_WEB_GENERATOR
         private static string rutaValidator = @"\app\Services\Validators\";
         private static string rutaModel = @"\app\models\";
         private static string rutaViewAdmin = @"\app\views\admin\";
-        
+
         private static string plantillaViewAdminEdit =
           @"@extends('admin._layouts.inside')
             @section('js_ready')
@@ -117,8 +117,107 @@ namespace LARAVEL_WEB_GENERATOR
         @section('main')
 
         @stop
-";
+        ";
         private static string plantillaViewAdminIndex = @"
+        @extends('admin._layouts.inside')
+@section('js_ready')
+    $("".tab"").each(function(i) {{
+        idTextarea = $(this).find('.ckeditor_textarea').attr('id');
+        CKEDITOR.replace(idTextarea, {{
+                height: '270px',
+                 stylesSet: [
+                                {{ name: 'Subtitulo', element: 'h2' }}
+                            ],
+            }} );
+        if(i!=0) $(this).hide();
+});
+	$(""form[data-confirm]"").submit(function()
+{{
+        if (!confirm($(this).attr(""data-confirm"")))
+        {
+            return false;
+        }
+    }});
+   
+    
+@stop
+@section('titulo')
+    Portfolios
+@stop
+@section('breadcumb')
+    <ul class=""breadcrumb"">
+        <li><a href = ""{{{{ \URL::route('admin.portfolio-general.edit') }}}}"" > Portfolio General</a> <span class=""divider"">/</span></li>
+        <li class=""active"">Portfolios</li>
+    </ul>
+@stop
+@section('submain')
+
+{ { Notification::showAll() } }
+
+    @if($errors->any())
+    <div class=""alert alert-error"">
+        {{{{ implode('<br>', $errors->all()) }}}}
+    </div>
+    @endif
+    <div style=""margin-bottom: 20px;"">
+		<a href = ""{{{{ URL::route('admin.portfolio.create') }}}}"" class=""btn btn-success""><i class=""icon-plus-sign""></i> Crear un nuevo portfolio</a>
+     	</div>
+
+			<div class=""box"">
+				<div class=""box-content nopadding"">
+					<table class=""table table-hover table-nomargin table-bordered"">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Texto</th>
+								<th style = ""width:270px;"" > Acciones </ th >
+                            </ tr >
+                        </ thead >
+                        < tbody >
+                            @foreach($portfolios as $portfolio)
+                            < tr >
+                                < td >
+
+                                    < a href=""{{{{ URL::route('admin.portfolio.edit', $portfolio->id) }}}}"">{{{{ $portfolio->idiomas()->catalan()->get()->first()->pivot->titulo }}}}</a>
+									
+								</td>
+								<td>{{{{ \Helper::cortarCadena($portfolio->idiomas()->catalan()->get()->first()->pivot->descripcion_corta, 100,'...') }}}}</td>
+								
+								
+								<td >
+									<!--
+                                    @if(!$portfolio->isAlone())
+                                        @if($portfolio->isFirst())
+											<a href = ""{{{{ URL::route('admin.portfolio.ordenarAbajo', $portfolio->id) }}}}"" class=""btn btn-success btn-mini pull-left""><i class=""icon-circle-arrow-down""></i></a>
+                                        @elseif($portfolio->isLast())
+											<a href = ""{{{{ URL::route('admin.portfolio.ordenarArriba', $portfolio->id) }}}}"" class=""btn btn-success btn-mini pull-left""><i class=""icon-circle-arrow-up""></i></a>
+										@else
+                                            <a href=""{{{{ URL::route('admin.portfolio.ordenarArriba', $portfolio->id) }}}}"" class=""btn btn-success btn-mini pull-left""><i class=""icon-circle-arrow-up""></i></a>
+											<a href = ""{{{{ URL::route('admin.portfolio.ordenarAbajo', $portfolio->id) }}}}"" class=""btn btn-success btn-mini pull-left""><i class=""icon-circle-arrow-down""></i></a>
+										@endif
+                                    @endif
+									-->
+									<a href = ""{{{{ URL::route('admin.portfolio.edit', $portfolio->id) }}}}"" class=""btn btn-success btn-mini pull-left""><i class=""icon-edit""></i>&nbsp;Editar&nbsp;</a>
+                                    @if($portfolio->isActivo())
+										 <a href = ""{{{{ URL::route('admin.portfolio.publicar', $portfolio->id) }}}}"" class=""btn btn-success btn-mini pull-left""><i class=""icon-eye-open""></i> &nbsp;Esconder&nbsp;</a>
+									@else
+                                         <a href=""{{{{ URL::route('admin.portfolio.publicar', $portfolio->id) }}}}"" class=""btn btn-success btn-mini pull-left""><i class=""icon-eye-close""></i> &nbsp;Publicar&nbsp;</a>
+									@endif
+									{{{{ Form::open(array('route' => array('admin.portfolio.destroy', $portfolio->id), 'method' => 'delete', 'data-confirm' => 'Estas seguro?')) }}}}
+										<button type = ""submit"" class=""btn btn-danger btn-mini""><i class=""icon-remove-sign""></i>&nbsp;Eliminar&nbsp;</button>
+									{{{{ Form::close() }}}}
+
+								</td>
+							</tr>
+							@endforeach
+                        </tbody>
+					</table>
+					{{{{ $portfolios->links() }}}}
+				</div>
+			</div>
+
+  
+@stop
 ";
  
 
@@ -522,12 +621,12 @@ namespace LARAVEL_WEB_GENERATOR
         public static void WriteShowViewFile(XmlModel model, Elemento elemento)
         {
             System.IO.Directory.CreateDirectory(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower());
-            Write(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower() + "/edit.blade.php", String.Format(plantillaViewAdminEdit, elemento.Nombre.ToLower(), elemento.Descripcion, scriptCode, breadcumb, tabCode, textCode));
+            Write(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower() + "/show.blade.php", String.Format(plantillaViewAdminEdit, elemento.Nombre.ToLower(), elemento.Descripcion, scriptCode, breadcumb, tabCode, textCode));
         }
         public static void WriteIndexViewFile(XmlModel model, Elemento elemento)
         {
             System.IO.Directory.CreateDirectory(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower());
-            Write(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower() + "/edit.blade.php", String.Format(plantillaViewAdminEdit, elemento.Nombre.ToLower(), elemento.Descripcion, scriptCode, breadcumb, tabCode, textCode));
+            Write(model.Ruta + model.Nombre + rutaViewAdmin + elemento.Nombre.ToLower() + "/index.blade.php", String.Format(plantillaViewAdminEdit, elemento.Nombre.ToLower(), elemento.Descripcion, scriptCode, breadcumb, tabCode, textCode));
         }
 
         private static void Write(string path,string text)
@@ -536,4 +635,3 @@ namespace LARAVEL_WEB_GENERATOR
         }
     }
 }
-iis
