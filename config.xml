@@ -26,8 +26,8 @@
       <HIJOS>
         <pdf singular="1" descripcion="Información">
           <idpdf type="int" />
-          <descripcion type="text"></descripcion>
-          <url type="text"></url>
+          <descripcion type="text" editable="1" mostrarIndex="1"></descripcion>
+          <url type="text" editable="1"  mostrarEnIndex="1"></url>
         </pdf>
       </HIJOS>
     </archivos_generales>
