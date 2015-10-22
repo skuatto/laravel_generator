@@ -21,6 +21,7 @@
 		</Informacio>
     <archivos_generales descripcion="Archivos generales">
       <idarchivos_generales type="int"   />
+      <descripcion type="text" editable="1">Descripcion</descripcion>
       <pdf_idpdf type="int"  relacion_hijo="pdf" relacion_campo="idpdf" />
       <HIJOS>
         <pdf singular="1" descripcion="Información">
