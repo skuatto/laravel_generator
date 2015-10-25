@@ -38,6 +38,7 @@ namespace LARAVEL_WEB_GENERATOR
             }
         }
 
+        //Ubicación donde el administrador redirigira namás entrar
         public static void ModifyAuthController(XmlModel model, Elemento elemento)
         {
             ModifyLine(model.Ruta + model.Nombre + '\\' + rutaAuthController, String.Format(@"                               return Redirect::route('admin.{0}.edit');", elemento.Nombre.ToLower()), 33);
@@ -95,6 +96,7 @@ namespace LARAVEL_WEB_GENERATOR
             AppendLines(model.Ruta + model.Nombre + '\\' + rutaLayoutInside, textToAppend, 13);
         }
 
+        //Si es multidioma configura los idiomas
         public static void ModifyApp(XmlModel model)
         {
             string idiomaText = "";
@@ -111,7 +113,7 @@ namespace LARAVEL_WEB_GENERATOR
             
         }
 
-        //Individual para cada elemento
+        //Individual para cada elemento, modifica el routing
         public static int ModifyRoute(XmlModel model, Elemento elemento, int linea = 31, bool first = false )
         {
             string textToAppend = "";

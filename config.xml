@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <XML>
-	<RUTA>C:\Proyectos\PHP\</RUTA>
+	<RUTA>C:\wamp\www\</RUTA>
 	<NOMBRE>laraveltest</NOMBRE>
   <DESCRIPCION>Test @!!</DESCRIPCION>
 	<IDIOMAS>
